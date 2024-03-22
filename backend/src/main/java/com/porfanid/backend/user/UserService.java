@@ -18,7 +18,9 @@ public class UserService {
     public void saveUser(User user) {
         userRepository.save(user);
     }
-
+    public void deleteUser(User username) {
+        userRepository.delete(username);
+    }
     // Other methods for user management can be added here
 }
 
