@@ -16,7 +16,7 @@ public class User {
     private String password;
     private String fullName;
     private String address;
-    private int age;
+    private Integer age;
     private String phoneNumber;
     private String categories;
     @Column(columnDefinition = "TEXT") // To handle large strings
@@ -24,9 +24,11 @@ public class User {
 
     // Constructors
     public User() {
+        this.categories = "";
+        this.favouriteAuthors = "";
     }
 
-    public User(String username, String password, String fullName, String address, int age, String phoneNumber) {
+    public User(String username, String password, String fullName, String address, Integer age, String phoneNumber) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
