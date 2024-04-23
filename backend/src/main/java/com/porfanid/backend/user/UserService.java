@@ -22,5 +22,9 @@ public class UserService {
         userRepository.delete(username);
     }
     // Other methods for user management can be added here
+
+    public void UpdateUser(User user, String newEmail) {
+        userRepository.updateUser(user.getUsername(), newEmail);
+    }
 }
 

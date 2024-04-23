@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -17,11 +18,35 @@ public class FrontPage {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/profile")
+    @GetMapping("/")
+    public String getHomePage(HttpSession session) {
+
+        return "redirect:/book";
+    }
+
+
+    //--------------------------------------------------------------------------------------------------------------------
+    @GetMapping("/profile_details")
     public ResponseEntity<?> getUserProfile(HttpSession session) {
         User user = (User)session.getAttribute("user");
         System.out.println(user);
-        return ResponseEntity.ok(Objects.requireNonNullElse(user, "redirect:/homepage.html"));
+        return ResponseEntity.ok(Objects.requireNonNullElse(user, "redirect: /homepage.html"));
+    }
+
+    @PostMapping("/update-profile")
+    public ResponseEntity<?> updateUserProfile(@RequestBody User user, HttpSession session) {
+        System.out.println(user);
+        User oldUser = (User)session.getAttribute("user");
+        userService.UpdateUser(oldUser, user.getUsername());
+        System.out.println(user);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/profile")
+    public String userProfilePage(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        System.out.println(user);
+        return "profile";
     }
 
 
@@ -31,13 +56,23 @@ public class FrontPage {
         System.out.println(user);
         return ResponseEntity.ok(Objects.requireNonNullElse(user, "redirect:/homepage.html"));
     }
+    //--------------------------------------------------------------------------------------------------------------------
 
+
+
+
+
+    //--------------------------------------------------------------------------------------------------------------------
     @GetMapping("/register")
     public String register()
     {
         return "register";
     }
+//--------------------------------------------------------------------------------------------------------------------
 
+
+
+    //--------------------------------------------------------------------------------------------------------------------
     @GetMapping("/login")
     public String login()
     {
@@ -51,12 +86,15 @@ public class FrontPage {
         if (trying_user!=null) {
             // Successful authentication
             session.setAttribute("user", trying_user);
-            return "redirect:/profile.html"; // Redirect to the dashboard page
+            return "redirect:/book"; // Redirect to the dashboard page
         }else {
             // Authentication failed, display error message
             return "redirect:/login?error=1"; // Redirect back to the login page with error parameter
         }
     }
+//--------------------------------------------------------------------------------------------------------------------
+
+
 
     private User authenticateUser(String email, String pass) {
         List<User> users= userService.getAllUsers();

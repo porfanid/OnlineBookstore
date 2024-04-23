@@ -4,25 +4,36 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "book")
+@IdClass(BookKey.class)
 public class Book {
+
     @Id
     private String title;
-    private String author;
-    private String category;
-    private String summary;
 
+    @Id
     private String username;
+
+    @Column(name = "author")
+    private String author;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "summary")
+    private String summary;
 
     // Constructors
     public Book() {}
 
-    public Book(String title, String author, String category, String summary, String username) {
+    public Book(String title, String username, String author, String category, String summary) {
         this.title = title;
+        this.username = username;
         this.author = author;
         this.category = category;
         this.summary = summary;
-        this.username = username;
     }
+
+    // Getters and Setters (Omitted for brevity)
 
     public String getTitle() {
         return title;
@@ -32,15 +43,16 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public void setAuthor(String author) {
@@ -61,5 +73,9 @@ public class Book {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String toString(){
+        return title+" - "+ author;
     }
 }

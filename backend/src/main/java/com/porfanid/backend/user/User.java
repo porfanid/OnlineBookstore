@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Entity
@@ -30,7 +31,7 @@ public class User {
 
     public User(String username, String password, String fullName, String address, Integer age, String phoneNumber) {
         this.username = username;
-        this.password = password;
+        this.password = hashPassword(password);
         this.fullName = fullName;
         this.address = address;
         this.age = age;
@@ -126,6 +127,29 @@ public class User {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "User{", "}");
+        joiner.add("username='" + username + "'");
+        joiner.add("fullName='" + fullName + "'");
+        joiner.add("address='" + address + "'");
+        joiner.add("age=" + age);
+        joiner.add("phoneNumber='" + phoneNumber + "'");
+        joiner.add("categories='" + categories + "'");
+        joiner.add("favouriteAuthors=" + getFavouriteAuthorsAsString());
+
+        return joiner.toString();
+    }
+
+    private String getFavouriteAuthorsAsString() {
+        List<String> authors = getFavouriteAuthors();
+        if (authors.isEmpty()) {
+            return "[]";
+        } else {
+            return "[" + String.join(", ", authors) + "]";
         }
     }
 
