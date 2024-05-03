@@ -13,11 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
 @RequestMapping("/book")
 public class BookController {
+
+    public class BookCase{
+        public Book book;
+        public String lendedTo;
+        public ArrayList<Requests> requestsToThisBook;
+
+        public BookCase(){
+            requestsToThisBook = new ArrayList<>();
+        }
+
+        public boolean hasRequestedTheBook(User user){
+            for(Requests r:requestsToThisBook){
+                if(r.getUsername().equals(user.getUsername())){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
     private final BookService bookService;
     private final RequestsRepo requestsRepo;
@@ -61,20 +81,30 @@ public class BookController {
 
 
 
-        ArrayList<Book> userBooks = new ArrayList<>();
-        ArrayList<Book> otherBooks = new ArrayList<>();
+        ArrayList<BookCase> otherBooks = new ArrayList<>();
+        ArrayList<BookCase> books = new ArrayList<>();
 
         for (Book book : bookList) {
+            BookCase b = new BookCase();
+            b.book = book;
+
+            for(Requests r:requestsList){
+                if(r.getTitle().equals(book.getTitle())&&r.getHolder().equals(book.getUsername())){
+                    b.requestsToThisBook.add(r);
+                    if(r.isAccepted()>0){
+                        b.lendedTo = r.getUsername();
+                    }
+                }
+            }
             if(book.getUsername().equals(temp.getUsername())){
-                userBooks.add(book);
+                books.add(b);
             }else{
-                otherBooks.add(book);
+                otherBooks.add(b);
             }
         }
 
-        model.addAttribute("userBooks", userBooks);
+        model.addAttribute("userBooks", books);
         model.addAttribute("otherBooks", otherBooks);
-        model.addAttribute("userRequests", requestsList);
         model.addAttribute("currentUser", temp);
 
         return "books";

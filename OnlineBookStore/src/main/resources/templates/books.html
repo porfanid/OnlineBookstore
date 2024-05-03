@@ -4,17 +4,17 @@
       <!-- Required meta tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Booksto - Responsive Bootstrap 4 Admin Dashboard Template</title>
+      <title>Online Book Store</title>
       <!-- Favicon -->
-      <link rel="shortcut icon" href="images/favicon.ico" />
+      <link rel="shortcut icon" href="/images/favicon.ico" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="/css/bootstrap.min.css">
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="css/typography.css">
+      <link rel="stylesheet" href="/css/typography.css">
       <!-- Style CSS -->
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="/css/style.css">
       <!-- Responsive CSS -->
-      <link rel="stylesheet" href="css/responsive.css">
+      <link rel="stylesheet" href="/css/responsive.css">
    </head>
    <body>
       <!-- loader Start -->
@@ -28,8 +28,8 @@
          <!-- Sidebar  -->
          <div class="iq-sidebar">
             <div class="iq-sidebar-logo d-flex justify-content-between">
-               <a href="index.html" class="header-logo">
-                  <img src="images/logo.png" class="img-fluid rounded-normal" alt="">
+               <a href="/" class="header-logo">
+                  <img src="/images/logo.png" class="img-fluid rounded-normal" alt="">
                   <div class="logo-title">
                      <span class="text-primary text-uppercase">Booksto</span>
                   </div>
@@ -463,15 +463,14 @@
                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                               <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
                               <div class="caption">
-                                 <h6 class="mb-1 line-height">Barry Tech</h6>
-                                 <p class="mb-0 text-primary">$20.32</p>
+                                 <h6 class="mb-1 line-height" th:text="${currentUser.getFullName()}"></h6>
                               </div>
                            </a>
                            <div class="iq-sub-dropdown iq-user-dropdown">
                               <div class="iq-card shadow-none m-0">
                                  <div class="iq-card-body p-0 ">
                                     <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
+                                       <h5 class="mb-0 text-white line-height">Hello <span th:text="${currentUser.getFullName()}"></span></h5>
                                        <span class="text-white font-size-12">Available</span>
                                     </div>
                                     <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
@@ -542,42 +541,28 @@
 
 
                               <li th:each="book : ${otherBooks}" style="border: 5px solid #c80000;" class="item d-flex flex-column align-items-center text-center">
-                                 <span th:if="${#lists.contains(userRequests.![title], book.title) and #lists.contains(userRequests.![username], currentUser.username) and #lists.contains(userRequests.![holder], book.username)}">
-                                     <span style="color: green;">(You have requested this book)</span>
+                                 <span class="badge-success" th:if="${book.lendedTo!=null&&book.lendedTo.equals(currentUser.getUsername())}">
+                                     (You have borrowed this book)
+                                 </span>
+                                 <span class="badge-warning" th:if="${book.hasRequestedTheBook(currentUser)&&!(book.lendedTo!=null&&book.lendedTo.equals(currentUser.getUsername()))}">
+                                     (You have requested this book)
                                  </span>
                                  <div class="mt-3">
-                                    <div>Title: <span th:text="${book.getTitle()}"></span></div>
-                                    <div>Author: <span th:text="${book.getAuthor()}"></span></div>
-                                    <div>Category: <span th:text="${book.getCategory()}"></span></div>
-                                    <div>Owner: <span th:text="${book.getUsername()}"></span></div>
+                                    <div>Title: <span th:text="${book.book.getTitle()}"></span></div>
+                                    <div>Author: <span th:text="${book.book.getAuthor()}"></span></div>
+                                    <div>Category: <span th:text="${book.book.getCategory()}"></span></div>
+                                    <div>Owner: <span th:text="${book.book.getUsername()}"></span></div>
                                  </div>
                                  <div class="mt-3 mb-3">
                                     <a
-                                            th:href="@{borrowBook(title=${book.getTitle()}, owner=${book.getUsername()})}"
-                                            th:classappend="${#lists.contains(userRequests.![title], book.title) and #lists.contains(userRequests.![username], currentUser.username) and #lists.contains(userRequests.![holder], book.username)} ? 'btn btn-info disabled' : 'btn btn-info'">
+                                            th:href="@{borrowBook(title=${book.book.getTitle()}, owner=${book.book.getUsername()})}"
+                                            th:classappend="${book.hasRequestedTheBook(currentUser)} ? 'btn btn-info disabled' : 'btn btn-info'">
                                        Select
                                     </a>
                                  </div>
                               </li>
 
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/06.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
 
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/06.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
-
-
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/06.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
 
 
 
@@ -588,31 +573,6 @@
                                     <img src="images/new_realeases/05.jpg" class="img-fluid w-100 rounded" alt="">
                                  </a>
                               </li>
-
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/06.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
-
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/07.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
-
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/08.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
-
-                              <li class="item">
-                                 <a href="javascript:void(0);">
-                                    <img src="images/new_realeases/09.jpg" class="img-fluid w-100 rounded" alt="">
-                                 </a>
-                              </li>
-
 
                            </ul>
 
@@ -647,52 +607,54 @@
                                           <div class="col-6 p-0 position-relative image-overlap-shadow">
                                              <!-- Book Details -->
                                              <div>
-                                                <h6 th:text="${book.title}" class="mb-1"></h6>
+                                                <h6 th:text="${book.book.title}" class="mb-1"></h6>
                                              </div>
                                              <div>
-                                                <p class="font-size-13 line-height mb-1" th:text="${book.author}"></p>
+                                                <p class="font-size-13 line-height mb-1" th:text="${book.book.author}"></p>
                                              </div>
                                              <div>
-                                                <span class="font-size-11 text-warning" th:text="${book.category}"></span>
+                                                <span class="font-size-11 text-warning" th:text="${book.book.category}"></span>
                                              </div>
 
                                              <!-- View Summary Button -->
                                              <div class="view-book">
                                                 <button type="button" class="btn btn-sm btn-white view-summary-btn" data-toggle="modal" data-target="#summaryModal"
-                                                        th:data-book-title="${book.title}" th:data-book-summary="${book.summary}">
+                                                        th:data-book-title="${book.book.title}" th:data-book-summary="${book.book.summary}">
                                                    View Summary
                                                 </button>
                                              </div>
                                           </div>
-                                          <div class="col-6">
-                                             <!-- Requested By Section -->
-                                             <div class="" th:if="${#lists.contains(userRequests.![title], book.title)}">
-                                                <p><strong>Requested By:</strong></p>
-                                                <ul>
-                                                   <li th:each="request : ${userRequests}" th:if="${request.title == book.title}">
-                                                      <p th:text="${request.username}"></p>
-                                                      <a
-                                                              th:href="@{confirmRequest(username=${request.username}, title=${request.getTitle()}, holder=${request.getHolder()})}"
-                                                              class='btn btn-info'>
-                                                         <i class="fa fa-check"></i>
-                                                      </a>
-                                                      <a
-                                                              th:href="@{rejectRequest(username=${request.username}, title=${request.getTitle()}, holder=${request.getHolder()})}"
-                                                              class='btn btn-info'>
-                                                      <i class="fa fa-close" style="color: red;"></i>
-                                                      </a>
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                             <div class="price d-flex align-items-center">
-                                                <span class="pr-1 old-price">$100</span>
-                                                <h6><b>$89</b></h6>
-                                             </div>
-                                             <div class="iq-product-action">
-                                                <a href="javascript:void();"><i class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                <a href="javascript:void();" class="ml-2"><i class="ri-heart-fill text-danger"></i></a>
-                                             </div>
+
+
+                                          <div >
+                                             <!-- Check if the book is lent out -->
+                                                <div th:if="${book.lendedTo!=null}" class="alert-success">
+                                                   Lended to: <span th:text="${book.lendedTo}"></span>
+                                                </div>
+
+                                             <!-- Render 'Requested By' section only if the book hasn't been lent out -->
+                                                <div th:if="${book.lendedTo==null}">
+                                                   <p>
+                                                      <strong>Requested By:</strong>
+                                                   </p>
+                                                   <ul>
+                                                      <li th:each="requestItem : ${book.requestsToThisBook}">
+                                                         <p th:text="${requestItem.username}"></p>
+                                                         <a th:href="@{/confirmRequest(username=${requestItem.username}, title=${requestItem.title}, holder=${requestItem.holder})}" class="btn btn-info">
+                                                            <i class="fa fa-check"></i> Confirm
+                                                         </a>
+                                                         <a th:href="@{/rejectRequest(username=${requestItem.username}, title=${requestItem.title}, holder=${requestItem.holder})}" class="btn btn-info">
+                                                            <i class="fa fa-close" style="color: red;"></i> Reject
+                                                         </a>
+                                                      </li>
+                                                   </ul>
+                                                </div>
                                           </div>
+
+
+
+
+
                                        </div>
                                     </div>
                                  </div>
