@@ -1,0 +1,5 @@
+runtime: java11
+instance_class: com.porfanid.backend.book.BookController
+handlers:
+  - url: /.*
+    script: auto
