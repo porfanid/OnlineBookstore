@@ -3,10 +3,7 @@ package com.porfanid.backend.user;
 import jakarta.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -108,6 +105,37 @@ public class User {
 
     public void setFavouriteAuthors(List<String> favouriteAuthors) {
         this.favouriteAuthors = convertListToTSV(favouriteAuthors);
+    }
+
+    public void addCategory(String category){
+        categories+=","+category;
+    }
+
+    public List<String> getCategoriesAsList(){
+        if (categories.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return Arrays.asList(categories.split(","));
+        }
+    }
+
+    public void removeCategory(String category){
+        StringBuilder tempCategories = new StringBuilder();
+        for(String tempCategory:categories.split(",")){
+            if (!tempCategory.equalsIgnoreCase(category)){
+                tempCategories.append(",").append(tempCategory);
+            }
+        }
+        setCategories(tempCategories.toString());
+    }
+
+    public boolean isFavouriteCategory(String category){
+        for(String tempCategory:categories.split(",")){
+            if (tempCategory.equalsIgnoreCase(category)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private String hashPassword(String password) {

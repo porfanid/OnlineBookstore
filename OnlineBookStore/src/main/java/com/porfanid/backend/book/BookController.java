@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/book")
 public class BookController {
 
-    public class BookCase{
+    public static class BookCase{
         public Book book;
         public String lendedTo;
         public ArrayList<Requests> requestsToThisBook;
