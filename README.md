@@ -1,6 +1,6 @@
 # OnlineBookstore
 
-This project is developed as part of the Software Development course, showcasing a comprehensive online bookstore application built with Java Spring Boot.
+This project is developed as part of the Software Development II course, showcasing a comprehensive online bookstore application built with Java Spring Boot.
 
 ## Features
 
