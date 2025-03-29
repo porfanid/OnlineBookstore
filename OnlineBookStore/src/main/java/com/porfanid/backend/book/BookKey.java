@@ -16,7 +16,6 @@ public class BookKey implements Serializable {
     }
 
     public BookKey() {
-
     }
 
     // Getters and setters (required for JPA)

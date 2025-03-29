@@ -1,0 +1,17 @@
+com/porfanid/backend/user/UserController.class
+com/porfanid/backend/service/requests/Requests.class
+com/porfanid/backend/user/FrontPage.class
+com/porfanid/backend/ServletInitializer.class
+com/porfanid/backend/book/BookKey.class
+com/porfanid/backend/user/User.class
+com/porfanid/backend/book/BookController$BookCase.class
+com/porfanid/backend/user/UserRepository.class
+com/porfanid/backend/BackendApplication.class
+com/porfanid/backend/book/BookController.class
+com/porfanid/backend/user/UserService.class
+com/porfanid/backend/book/Book.class
+com/porfanid/backend/service/requests/RequestsRepo.class
+com/porfanid/backend/book/BookService.class
+com/porfanid/backend/book/BookRepository.class
+com/porfanid/backend/service/requests/BookPage.class
+com/porfanid/backend/service/requests/RequestsId.class
